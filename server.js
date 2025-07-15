@@ -1,11 +1,23 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const mongodb = require(`./data/database`)
 const app = express();
 
 const  port = process.env.PORT || 3000;
 
+app.use(bodyParser.json());
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+        'Access-Control-Allow-Headers', 
+        'Orgin, X-Requested-With, Content-Type, Accept, Z-Key'
+    );
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+})
 // Register all routes from routes/index.js
 app.use('/', require('./routes'));
+
 
 // Initialize the database connection
 mongodb.initDB((err) => {
@@ -17,5 +29,3 @@ mongodb.initDB((err) => {
         app.listen (port, () => {console.log(`Database is listening and node running on port ${port} | http://localhost:${port}/`);});
     }
 });
-
-

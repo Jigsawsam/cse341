@@ -17,7 +17,7 @@ const initDB = (callback) => {
     MongoClient.connect(process.env.MONGODB_URL)
     .then((client) => {
         
-        // Assign the connected database object as db
+        // Get the connected database (from the connection string) and assign it to the 'database' variable
         database = client.db();
       callback(null, database);
     })
@@ -26,7 +26,7 @@ const initDB = (callback) => {
     })
 };
 
-// Verify that the database is connected before returning it
+// Verify that the database is connected before returning it as an object
 const getDatabase = () => {
     if (!database) {
         throw Error('Database not initialized')
